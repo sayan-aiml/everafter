@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-paper text-ink antialiased;
+  }
+}
+
+@layer components {
+  /* Flat hairline card — Swiss/editorial, not glassy */
+  .card {
+    @apply bg-paper border border-hairline rounded-2xl shadow-editorial;
+  }
+  .card-tinted {
+    @apply bg-lavender-soft/25 border border-lavender-soft rounded-2xl;
+  }
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-magenta;
+  }
+  .brand-text {
+    @apply bg-brand-gradient bg-clip-text text-transparent;
+  }
+  .hairline-divider {
+    @apply border-t border-hairline;
+  }
+  .progress-track {
+    @apply w-full h-1.5 rounded-full bg-hairline overflow-hidden;
+  }
+  .progress-fill {
+    @apply h-full bg-brand-gradient rounded-full transition-all duration-500;
+  }
+}
