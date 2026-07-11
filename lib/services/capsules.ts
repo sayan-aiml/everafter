@@ -1,7 +1,11 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, TimeCapsule } from "@/types/database";
 
+<<<<<<< HEAD
 export async function listTimeCapsules(supabase: SupabaseClient) {
+=======
+export async function listTimeCapsules(supabase: SupabaseClient<Database>) {
+>>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   const { data, error } = await supabase
     .from("time_capsules")
     .select("*")
@@ -18,7 +22,11 @@ export async function listTimeCapsules(supabase: SupabaseClient) {
 }
 
 export async function createTimeCapsule(
+<<<<<<< HEAD
   supabase: SupabaseClient,
+=======
+  supabase: SupabaseClient<Database>,
+>>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   capsule: { couple_id: string; created_by: string; title: string; message?: string; unlock_at: string }
 ) {
   const { data, error } = await supabase.from("time_capsules").insert(capsule).select().single();

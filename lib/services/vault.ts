@@ -3,7 +3,11 @@ import type { Database } from "@/types/database";
 
 export type MediaType = "photo" | "video" | "audio" | "document";
 
+<<<<<<< HEAD
 export async function listMedia(supabase: SupabaseClient) {
+=======
+export async function listMedia(supabase: SupabaseClient<Database>) {
+>>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   const { data, error } = await supabase
     .from("media")
     .select("*")
@@ -17,7 +21,11 @@ export async function listMedia(supabase: SupabaseClient) {
 // mirror table RLS: policies check that the path's first segment equals
 // current_couple_id() (see supabase/schema.sql comment block).
 export async function uploadMedia(
+<<<<<<< HEAD
   supabase: SupabaseClient,
+=======
+  supabase: SupabaseClient<Database>,
+>>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   {
     file,
     coupleId,
@@ -57,7 +65,11 @@ export async function uploadMedia(
   return data;
 }
 
+<<<<<<< HEAD
 export async function getMediaUrl(supabase: SupabaseClient, path: string) {
+=======
+export async function getMediaUrl(supabase: SupabaseClient<Database>, path: string) {
+>>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   // Private bucket — use a signed URL rather than a public one.
   const { data, error } = await supabase.storage.from("media").createSignedUrl(path, 60 * 60);
   if (error) throw error;

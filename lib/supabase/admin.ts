@@ -13,7 +13,11 @@ import type { Database } from "@/types/database";
 // Do not import this file from any client component or from a route that
 // doesn't need to cross the RLS boundary.
 export function createAdminClient() {
+<<<<<<< HEAD
   return createSupabaseClient(
+=======
+  return createSupabaseClient<Database>(
+>>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { persistSession: false, autoRefreshToken: false } }

@@ -13,7 +13,11 @@ function generateCoupleCode(): string {
 }
 
 export async function createCoupleSpace(
+<<<<<<< HEAD
   supabase: SupabaseClient,
+=======
+  supabase: SupabaseClient<Database>,
+>>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   userId: string
 ) {
   const coupleCode = generateCoupleCode();
@@ -34,7 +38,11 @@ export async function createCoupleSpace(
 }
 
 export async function joinCoupleByInviteCode(
+<<<<<<< HEAD
   supabase: SupabaseClient,
+=======
+  supabase: SupabaseClient<Database>,
+>>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   inviteCode: string
 ) {
   const { data, error } = await supabase.rpc("join_couple_by_invite_code", {
@@ -44,7 +52,11 @@ export async function joinCoupleByInviteCode(
   return data; // returns the couple_id
 }
 
+<<<<<<< HEAD
 export async function getMyCouple(supabase: SupabaseClient) {
+=======
+export async function getMyCouple(supabase: SupabaseClient<Database>) {
+>>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   // Relies entirely on RLS: this will only ever return the caller's own
   // couple row, never anyone else's, regardless of what filters are (not)
   // applied here.
