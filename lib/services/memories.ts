@@ -1,11 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Memory, MemoryType } from "@/types/database";
 
-<<<<<<< HEAD
 export async function listMemories(supabase: SupabaseClient) {
-=======
-export async function listMemories(supabase: SupabaseClient<Database>) {
->>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   const { data, error } = await supabase
     .from("memories")
     .select("*")
@@ -15,11 +11,7 @@ export async function listMemories(supabase: SupabaseClient<Database>) {
 }
 
 export async function createMemory(
-<<<<<<< HEAD
   supabase: SupabaseClient,
-=======
-  supabase: SupabaseClient<Database>,
->>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   memory: {
     couple_id: string;
     created_by: string;

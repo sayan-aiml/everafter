@@ -2,11 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, JournalEntry } from "@/types/database";
 
 export async function listJournalEntries(
-<<<<<<< HEAD
   supabase: SupabaseClient,
-=======
-  supabase: SupabaseClient<Database>,
->>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   { limit = 20, before }: { limit?: number; before?: string } = {}
 ) {
   let query = supabase
@@ -23,11 +19,7 @@ export async function listJournalEntries(
 }
 
 export async function createJournalEntry(
-<<<<<<< HEAD
   supabase: SupabaseClient,
-=======
-  supabase: SupabaseClient<Database>,
->>>>>>> 95a688f375e7bcd8fc3212ca95c220e5dbd9e549
   entry: {
     couple_id: string;
     author_id: string;
