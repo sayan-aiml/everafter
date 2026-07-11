@@ -22,7 +22,7 @@ export default async function BucketListPage() {
       <h1 className="font-display text-4xl mb-2">Bucket List</h1>
       <p className="text-ink-soft mb-6">Dreams you're chasing together.</p>
 
-      <GlassCard gradient className="mb-8">
+      <GlassCard tinted className="mb-8">
         <div className="flex items-center justify-between mb-2">
           <span className="font-display text-3xl font-bold">{progress}%</span>
           <span className="text-ink-soft text-sm font-medium">{completed} of {items.length} completed</span>
