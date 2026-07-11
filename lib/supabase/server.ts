@@ -1,7 +1,10 @@
 import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import type { Database } from "@/types/database";
 
+// Server-side Supabase client for Server Components / Route Handlers / Server
+// Actions. Still uses the ANON key + the caller's session cookie — RLS still
+// enforces every read/write. This is NOT the privileged client.
 export function createClient() {
   const cookieStore = cookies();
 
@@ -13,15 +16,20 @@ export function createClient() {
         get(name: string) {
           return cookieStore.get(name)?.value;
         },
-        set(name: string, value: string, options) {
+        set(name: string, value: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value, ...options });
-          } catch {}
+          } catch {
+            // Called from a Server Component — safe to ignore if middleware
+            // is refreshing the session.
+          }
         },
-        remove(name: string, options) {
+        remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: "", ...options });
-          } catch {}
+          } catch {
+            // see above
+          }
         },
       },
     }
