@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /journal
+Disallow: /memories
+Disallow: /capsules
+Disallow: /vault
+Disallow: /settings
+
+Sitemap: https://everafter.app/sitemap.xml
