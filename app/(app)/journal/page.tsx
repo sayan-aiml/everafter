@@ -1,10 +1,8 @@
-import { format } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
 import { getMyCouple } from "@/lib/services/couples";
 import { listJournalEntries } from "@/lib/services/journal";
 import { JournalComposer } from "@/components/journal/JournalComposer";
-import { GlassCard } from "@/components/ui/GlassCard";
-import { Reveal } from "@/components/ui/Reveal";
+import { JournalList } from "@/components/journal/JournalList";
 
 export default async function JournalPage() {
   const supabase = createClient();
@@ -14,40 +12,19 @@ export default async function JournalPage() {
   const couple = await getMyCouple(supabase);
   if (!couple || !user) return null;
 
-  const entries = await listJournalEntries(supabase, { limit: 50 });
+  const entries = await listJournalEntries(supabase, { limit: 100 });
 
   return (
-    <main className="px-10 py-10 max-w-3xl">
-      <p className="eyebrow mb-2">Couple journal</p>
-      <h1 className="font-display text-5xl mb-8">Words for us.</h1>
+    <main className="px-6 sm:px-10 py-8 sm:py-10 max-w-4xl mx-auto">
+      <div className="mb-8">
+        <p className="eyebrow mb-2">Couple Journal</p>
+        <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-ink">Words for us.</h1>
+        <p className="text-ink-soft text-sm mt-2">Daily prompts and private reflections, forever preserved.</p>
+      </div>
 
       <JournalComposer coupleId={couple.id} userId={user.id} />
-
-      <Reveal className="space-y-4">
-        {entries.map((entry) => (
-          <GlassCard key={entry.id}>
-            <div className="flex justify-between items-start mb-2">
-              <p className="text-xs text-ink-soft">
-                {format(new Date(entry.entry_date), "EEE, d MMM")}
-                {entry.mood && <span className="text-magenta ml-2">· {entry.mood}</span>}
-              </p>
-            </div>
-            {entry.prompt && (
-              <p className="text-xs uppercase tracking-wider text-lavender-deep font-medium mb-1">
-                {entry.prompt}
-              </p>
-            )}
-            <p className="font-display text-lg italic text-ink whitespace-pre-wrap leading-snug">
-              {entry.content}
-            </p>
-          </GlassCard>
-        ))}
-        {entries.length === 0 && (
-          <p className="text-ink-soft text-sm text-center py-10">
-            No entries yet — write your first one above.
-          </p>
-        )}
-      </Reveal>
+      <JournalList entries={entries} />
     </main>
   );
 }
+

@@ -4,31 +4,71 @@
 
 @layer base {
   body {
-    @apply bg-paper text-ink antialiased;
+    @apply bg-paper text-ink antialiased selection:bg-magenta-soft/30 selection:text-magenta-deep;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom sleek scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-hairline rounded-full hover:bg-ink-muted/40 transition-colors;
   }
 }
 
 @layer components {
-  /* Flat hairline card — Swiss/editorial, not glassy */
+  /* Luxurious Editorial Card with subtle glass tint & hover depth */
   .card {
-    @apply bg-paper border border-hairline rounded-2xl shadow-editorial;
+    @apply bg-paper-pure/90 backdrop-blur-md border border-hairline/80 rounded-2xl shadow-editorial transition-all duration-300 hover:shadow-glass hover:border-lavender-soft/60;
   }
+
   .card-tinted {
-    @apply bg-lavender-soft/25 border border-lavender-soft rounded-2xl;
+    @apply bg-brand-gradient-soft border border-lavender-soft/50 rounded-2xl shadow-editorial backdrop-blur-sm;
   }
+
+  .card-wax {
+    @apply bg-gradient-to-br from-rose-blush via-paper-pure to-lavender-mist border border-rose-soft/40 rounded-2xl shadow-floating relative overflow-hidden;
+  }
+
   .eyebrow {
-    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-magenta;
+    @apply text-[11px] font-bold uppercase tracking-[0.2em] text-magenta font-sans;
   }
+
   .brand-text {
-    @apply bg-brand-gradient bg-clip-text text-transparent;
+    @apply bg-brand-gradient bg-clip-text text-transparent font-display;
   }
+
+  .gold-text {
+    @apply bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 bg-clip-text text-transparent font-display;
+  }
+
   .hairline-divider {
-    @apply border-t border-hairline;
+    @apply border-t border-hairline/70;
   }
+
   .progress-track {
-    @apply w-full h-1.5 rounded-full bg-hairline overflow-hidden;
+    @apply w-full h-2 rounded-full bg-hairline overflow-hidden p-0.5;
   }
+
   .progress-fill {
-    @apply h-full bg-brand-gradient rounded-full transition-all duration-500;
+    @apply h-full bg-brand-gradient rounded-full transition-all duration-700;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+
+  /* Ambient glowing backdrop mesh */
+  .ambient-glow {
+    background: radial-gradient(circle at 50% 0%, rgba(230, 62, 156, 0.12) 0%, rgba(155, 138, 230, 0.08) 35%, transparent 70%);
+  }
+
+  /* Glass input fields */
+  .input-field {
+    @apply w-full rounded-xl bg-paper-pure border border-hairline px-4 py-3 text-sm text-ink outline-none transition-all duration-200 focus:border-magenta focus:ring-2 focus:ring-magenta/20 hover:border-lavender-soft;
   }
 }
+

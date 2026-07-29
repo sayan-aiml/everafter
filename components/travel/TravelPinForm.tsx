@@ -10,6 +10,7 @@ export function TravelPinForm({ coupleId, userId }: { coupleId: string; userId: 
   const supabase = createClient();
   const router = useRouter();
   const [place, setPlace] = useState("");
+  const [notes, setNotes] = useState("");
   const [status, setStatus] = useState<TravelStatus>("want_to_visit");
   const [loading, setLoading] = useState(false);
 
@@ -18,9 +19,6 @@ export function TravelPinForm({ coupleId, userId }: { coupleId: string; userId: 
     if (!place.trim()) return;
     setLoading(true);
     try {
-      // Geocoding is out of scope for the starter — lat/lng default to 0,0.
-      // Swap in a geocoding API (e.g. Mapbox Geocoding) before shipping the
-      // real interactive map; the pin list UI already works either way.
       await createTravelPin(supabase, {
         couple_id: coupleId,
         created_by: userId,
@@ -28,8 +26,10 @@ export function TravelPinForm({ coupleId, userId }: { coupleId: string; userId: 
         latitude: 0,
         longitude: 0,
         status,
+        notes: notes || undefined,
       });
       setPlace("");
+      setNotes("");
       router.refresh();
     } finally {
       setLoading(false);
@@ -37,31 +37,53 @@ export function TravelPinForm({ coupleId, userId }: { coupleId: string; userId: 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="card p-6 mb-8 flex flex-wrap gap-3 items-end">
-      <div className="flex-1 min-w-[200px]">
-        <label className="text-ink-soft text-xs font-medium">Place</label>
+    <form onSubmit={handleSubmit} className="card p-6 mb-8 space-y-3.5 shadow-editorial hover:shadow-glass transition-all">
+      <div className="flex items-center justify-between">
+        <p className="eyebrow">📍 Drop a Location Pin</p>
+        <span className="text-xl">✈️</span>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="sm:col-span-2">
+          <label className="block text-xs font-semibold text-ink-soft mb-1">Location / Destination Name</label>
+          <input
+            value={place}
+            onChange={(e) => setPlace(e.target.value)}
+            placeholder="e.g. Paris, France or Amalfi Coast"
+            required
+            className="input-field font-display text-base font-bold"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-semibold text-ink-soft mb-1">Travel Status</label>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value as TravelStatus)}
+            className="input-field font-medium"
+          >
+            <option value="next_trip">🧳 Next Trip</option>
+            <option value="want_to_visit">💭 Want to Visit</option>
+            <option value="visited">✅ Visited</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-xs font-semibold text-ink-soft mb-1">Notes / Memories (Optional)</label>
         <input
-          value={place}
-          onChange={(e) => setPlace(e.target.value)}
-          placeholder="Santorini, Greece"
-          className="w-full rounded-2xl bg-paper border border-hairline px-4 py-2.5 mt-1 outline-none focus:border-magenta"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="e.g. Best coffee shop near the Eiffel Tower!"
+          className="input-field"
         />
       </div>
-      <div>
-        <label className="text-ink-soft text-xs font-medium">Status</label>
-        <select
-          value={status}
-          onChange={(e) => setStatus(e.target.value as TravelStatus)}
-          className="block rounded-2xl bg-paper border border-hairline px-4 py-2.5 mt-1 outline-none focus:border-magenta"
-        >
-          <option value="want_to_visit">💭 Want to Visit</option>
-          <option value="next_trip">🧳 Next Trip</option>
-          <option value="visited">✅ Visited</option>
-        </select>
+
+      <div className="flex justify-end pt-1">
+        <Button type="submit" loading={loading} size="md">
+          Drop Pin on Map 📍
+        </Button>
       </div>
-      <Button type="submit" disabled={loading}>
-        {loading ? "Pinning…" : "Add Pin"}
-      </Button>
     </form>
   );
 }
+

@@ -11,6 +11,7 @@ export function VaultUploader({ coupleId, userId }: { coupleId: string; userId: 
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function handleFiles(files: FileList | null) {
@@ -23,7 +24,7 @@ export function VaultUploader({ coupleId, userId }: { coupleId: string; userId: 
       }
       router.refresh();
     } catch (e: any) {
-      setError(e.message ?? "Upload failed — make sure the 'media' Storage bucket exists.");
+      setError(e.message ?? "Upload failed — make sure the 'media' Storage bucket exists in Supabase.");
     } finally {
       setLoading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -32,11 +33,18 @@ export function VaultUploader({ coupleId, userId }: { coupleId: string; userId: 
 
   return (
     <div
-      className="card p-10 mb-8 text-center border-2 border-dashed border-lavender-soft cursor-pointer hover:border-magenta transition-colors"
+      className={`card p-10 mb-8 text-center border-2 border-dashed transition-all cursor-pointer shadow-editorial ${
+        isDragOver ? "border-magenta bg-brand-gradient-soft scale-[1.01]" : "border-lavender-soft/70 hover:border-magenta hover:shadow-glass"
+      }`}
       onClick={() => inputRef.current?.click()}
-      onDragOver={(e) => e.preventDefault()}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setIsDragOver(true);
+      }}
+      onDragLeave={() => setIsDragOver(false)}
       onDrop={(e) => {
         e.preventDefault();
+        setIsDragOver(false);
         handleFiles(e.dataTransfer.files);
       }}
     >
@@ -48,12 +56,20 @@ export function VaultUploader({ coupleId, userId }: { coupleId: string; userId: 
         className="hidden"
         onChange={(e) => handleFiles(e.target.files)}
       />
-      <p className="text-3xl mb-2">🖼️</p>
-      <p className="font-display text-lg mb-1">
-        {loading ? "Uploading…" : "Drop photos or videos here"}
+      <div className="h-14 w-14 rounded-full bg-brand-gradient flex items-center justify-center text-white text-2xl mx-auto mb-3 shadow-md">
+        🖼️
+      </div>
+      <p className="font-display text-xl font-bold text-ink mb-1">
+        {loading ? "Uploading files to your vault…" : "Drop photos, videos, or voice notes here"}
       </p>
-      <p className="text-ink-soft text-sm">or click to choose files</p>
-      {error && <p className="text-magenta text-sm mt-3">{error}</p>}
+      <p className="text-ink-soft text-xs">Supports PNG, JPG, MP4, MP3, and WAV up to 50MB</p>
+
+      {error && (
+        <div className="mt-4 p-3 rounded-xl bg-rose-blush border border-rose-soft/40 text-rose text-xs font-semibold max-w-md mx-auto">
+          {error}
+        </div>
+      )}
     </div>
   );
 }
+

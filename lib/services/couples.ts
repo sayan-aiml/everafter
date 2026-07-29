@@ -36,7 +36,16 @@ export async function joinCoupleByInviteCode(
 }
 
 export async function getMyCouple(supabase: SupabaseClient) {
-  const { data, error } = await supabase.from("couples").select("*").maybeSingle();
-  if (error) throw error;
-  return data;
-}
+  try {
+    const queryPromise = supabase.from("couples").select("*").maybeSingle();
+    const timeoutPromise = new Promise<{ data: null; error: null }>((resolve) =>
+      setTimeout(() => resolve({ data: null, error: null }), 1500)
+    );
+
+    const result = (await Promise.race([queryPromise, timeoutPromise])) as any;
+    if (result?.error) return null;
+    return result?.data ?? null;
+  } catch {
+    return null;
+  }
+}

@@ -18,17 +18,27 @@ export default async function BucketListPage() {
   const progress = items.length ? Math.round((completed / items.length) * 100) : 0;
 
   return (
-    <main className="px-10 py-10 max-w-3xl">
-      <h1 className="font-display text-4xl mb-2">Bucket List</h1>
-      <p className="text-ink-soft mb-6">Dreams you're chasing together.</p>
+    <main className="px-6 sm:px-10 py-8 sm:py-10 max-w-4xl mx-auto">
+      <div className="mb-8">
+        <p className="eyebrow mb-2">Bucket List</p>
+        <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-ink">Dreams for two.</h1>
+        <p className="text-ink-soft text-sm mt-2">Every adventure, trip, and quiet milestone you want to achieve together.</p>
+      </div>
 
-      <GlassCard tinted className="mb-8">
-        <div className="flex items-center justify-between mb-2">
-          <span className="font-display text-3xl font-bold">{progress}%</span>
-          <span className="text-ink-soft text-sm font-medium">{completed} of {items.length} completed</span>
+      <GlassCard tinted className="mb-8 p-6 shadow-glass">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <p className="eyebrow text-magenta mb-0.5">Progress Tracker</p>
+            <span className="font-display text-4xl font-extrabold text-ink">{progress}%</span>
+          </div>
+          <div className="text-right">
+            <span className="text-xs font-bold text-lavender-deep bg-lavender-soft/40 px-3 py-1 rounded-full border border-lavender-soft">
+              {completed} of {items.length} Dreams Achieved ✨
+            </span>
+          </div>
         </div>
         <div className="progress-track">
-          <div className="progress-fill" style={{ width: `${progress}%` }} />
+          <div className="progress-fill shadow-glow" style={{ width: `${progress}%` }} />
         </div>
       </GlassCard>
 
@@ -39,9 +49,12 @@ export default async function BucketListPage() {
           <BucketListItemRow key={item.id} item={item} />
         ))}
         {items.length === 0 && (
-          <p className="text-ink-soft text-sm text-center py-10">No dreams yet — add your first one above.</p>
+          <div className="card p-10 text-center text-ink-soft text-sm">
+            No dreams added yet — write your first bucket list goal above!
+          </div>
         )}
       </div>
     </main>
   );
 }
+

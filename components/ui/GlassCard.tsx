@@ -1,21 +1,30 @@
 import { clsx } from "clsx";
 import type { ReactNode } from "react";
 
-// Kept the filename `GlassCard` for import-compatibility across the app,
-// but the visual language is now flat/editorial (hairline border, no blur)
-// rather than glassmorphism — matches the Swiss/editorial direction.
 export function GlassCard({
   children,
   className,
   tinted = false,
+  wax = false,
+  hoverGlow = false,
 }: {
   children: ReactNode;
   className?: string;
   tinted?: boolean;
+  wax?: boolean;
+  hoverGlow?: boolean;
 }) {
   return (
-    <div className={clsx(tinted ? "card-tinted" : "card", "p-6", className)}>
+    <div
+      className={clsx(
+        wax ? "card-wax" : tinted ? "card-tinted" : "card",
+        hoverGlow && "hover:border-magenta-soft hover:shadow-glow cursor-pointer transition-all duration-300",
+        "p-6",
+        className
+      )}
+    >
       {children}
     </div>
   );
 }
+
