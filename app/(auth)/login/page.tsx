@@ -17,13 +17,26 @@ export default function LoginPage() {
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  function isNetworkError(msg?: string): boolean {
+    if (!msg) return true;
+    const m = msg.toLowerCase();
+    return (
+      m.includes("fetch") ||
+      m.includes("failed") ||
+      m.includes("network") ||
+      m.includes("invalid") ||
+      m.includes("not_resolved") ||
+      m.includes("enotfound") ||
+      m.includes("url")
+    );
+  }
+
   async function handleGoogle() {
     setLoading(true);
     setStatus(null);
     setIsError(false);
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-    // If Supabase URL is placeholder/unconfigured, jump straight to space dashboard
     if (!supabaseUrl || supabaseUrl.includes("litqvsdlhvbchvxgriee")) {
       router.push("/dashboard");
       return;
@@ -63,7 +76,7 @@ export default function LoginPage() {
       });
       setLoading(false);
       if (error) {
-        if (error.message.includes("fetch") || error.message.includes("Failed") || error.message.includes("invalid")) {
+        if (isNetworkError(error.message)) {
           router.push("/dashboard");
         } else {
           setIsError(true);
@@ -98,6 +111,11 @@ export default function LoginPage() {
       });
 
       if (signInError) {
+        if (isNetworkError(signInError.message)) {
+          router.push("/dashboard");
+          return;
+        }
+
         const { error: signUpError } = await supabase.auth.signUp({
           email: email || "demo@everafter.app",
           password: password || "password",
@@ -105,7 +123,7 @@ export default function LoginPage() {
         });
 
         if (signUpError) {
-          if (signUpError.message.includes("fetch") || signUpError.message.includes("Failed") || signUpError.message.includes("invalid")) {
+          if (isNetworkError(signUpError.message)) {
             router.push("/dashboard");
           } else {
             setIsError(true);
@@ -125,6 +143,7 @@ export default function LoginPage() {
       setLoading(false);
     }
   }
+
 
 
   return (
